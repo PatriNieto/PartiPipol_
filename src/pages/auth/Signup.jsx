@@ -9,6 +9,7 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handleUsernameChange = (e) => setUsername(e.target.value);
@@ -26,7 +27,12 @@ function Signup() {
       navigate("/login")
     } catch (error) {
       console.log(error)
-      //incluir redireccion a una pagina de /error
+      //sacamos el mensaje por el cual no se crea el usuario 
+      if(error.response.status === 400){
+        setErrorMessage(error.response.data.message)
+      } else {
+        navigate("/error")
+      }
     }
   };
 
@@ -69,7 +75,7 @@ function Signup() {
 
         <button type="submit">Registrar</button>
 
-        {errorMessage && <p>{errorMessage}</p>}s
+        {errorMessage && <p>{errorMessage}</p>}
 
       </form>
       

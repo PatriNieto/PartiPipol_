@@ -1,17 +1,48 @@
-import { useState } from "react";
+import axios from "axios";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/auth.context";
 
 function Login() {
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const navigate = useNavigate()
 
-  const handleEmailChange = (e) => setEmail(e.target.value);
+  const { authenticateUser } = useContext(AuthContext)
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+
+  const handleUsernameChange = (e) => setUsername(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // ... contactar al backend para validar credenciales de usuario aqui
+    try {
+      const userCredentials  = {
+        username, password
+      }
+
+      const response = await axios.post("http://localhost:5005/api/auth/login", userCredentials)
+      console.log(response)
+
+      localStorage.setItem("authToken", response.data.authToken)
+
+      
+      await authenticateUser()
+
+      navigate("/profile-page")
+    } catch (error) {
+      console.log(error)
+      //sacamos el mensaje por el cual no se crea el usuario 
+      if(error.response.status === 400){
+        setErrorMessage(error.response.data.message)
+      } else {
+        navigate("/error")
+      }
+    }
   };
 
   return (
@@ -20,12 +51,12 @@ function Login() {
       <h1>Formulario de Acceso</h1>
 
       <form onSubmit={handleLogin}>
-        <label>Correo Electronico:</label>
+        <label>Nombre de usuario:</label>
         <input
-          type="email"
-          name="email"
-          value={email}
-          onChange={handleEmailChange}
+          type="text"
+          name="username"
+          value={username}
+          onChange={handleUsernameChange}
         />
 
         <br />
@@ -41,6 +72,10 @@ function Login() {
         <br />
 
         <button type="submit">Acceder</button>
+
+        {errorMessage && <p>{errorMessage}</p>}
+
+
       </form>
       
     </div>
