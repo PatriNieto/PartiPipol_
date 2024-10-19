@@ -1,0 +1,43 @@
+* {
+  margin:0;
+}
+
+nav {
+  background-color: black;
+  color: white;  
+  width:100vw;
+}
+.container {
+  width: 100%;
+  background-color: black;
+  color: white;  
+}
+
+nav a {
+  color:white;
+}
+
+
+
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+}
+
+#root {
+  flex: 1;
+}
+
+footer {
+  width:100vw;
+  
+}
+
+
+
