@@ -37,6 +37,7 @@ function EventoDetailsPage() {
               <h1 className="text-2xl font-semibold mb-4">
                 {evento.nombre}
               </h1>
+              <p>{evento.fecha}</p>
               <br />
               <p className="mb-2 border-b pb-2">
                 <strong>Descripción:</strong> {evento.descripcion}
@@ -44,20 +45,33 @@ function EventoDetailsPage() {
               <p className="mb-2 border-b pb-2">
                 <strong>Dirección:</strong> 
                 <br />
-                {evento.direccion.calle}
-                <br />
+                {evento.direccion.calle},
                 {evento.direccion.ciudad}
               </p>
 
               {evento.artista ? (
-                <p>
-                  {evento.artista.nombre}
+                <div>
+                   <p>
+                  Artistas invitados:
+                 </p> 
+                 <p>
+                  {evento.artista}
                 </p>
+                </div>
+               
               ):(
                 <p>
                 Este evento no tiene artistas 
                 </p>
               )}
+
+              {evento.genero && (
+                <p>
+                  {evento.genero}
+                </p>
+              )}
+
+              <p>Precio: {evento.precio}€</p>
             </>
           )}
 

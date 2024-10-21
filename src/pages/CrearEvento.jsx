@@ -20,24 +20,24 @@ const DEFAULT_EVENTO_FORM_VALUES = {
   promoter: "",
 };
 
-function CrearEvento({ artistaId, artistaNombre}) {
+function CrearEvento({ artistaNombre}) {
   const navigate = useNavigate();
 
   // Inicializamos el evento con todas sus propiedades vacías
   const [evento, setEvento] = useState({ ...DEFAULT_EVENTO_FORM_VALUES });
-  const [artistas, setArtistas] = useState([]);
-  const [filteredArtistas, setFilteredArtistas] = useState([]);
+
+  //artistas tendrán un manejo especial, los buscaremos directamente en la API de Lastfm
+  const [artistSearch, setArtistSearch] = useState('');
+  const [artistResults, setArtistResults] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   // Ejecución al enviar formulario de creación de evento
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Creamos un objeto copia del evento pero asignamos el ID del artista
-    const requestBody = { ...evento, artista: artistaId };
-
+    
     setSubmitting(true);
-    console.log(requestBody)
+
     const token = localStorage.getItem("authToken");
 
     const eventoData = { ...evento };
@@ -46,11 +46,8 @@ function CrearEvento({ artistaId, artistaNombre}) {
     if (eventoData.artista === '') {
       delete eventoData.artista; // Eliminar el campo artista si está vacío
     }
-  
+
     console.log(eventoData); 
-
-
-
     // Hacemos llamada POST al servidor en la dirección
     axios
       .post(`${API_URL}/api/eventos/evento`, eventoData, {
@@ -71,44 +68,33 @@ function CrearEvento({ artistaId, artistaNombre}) {
       });
   };
 
-  // Cargar todos los artistas desde la API
-  useEffect(() => {
-    const fetchArtistas = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/api/artistas`);
-        setArtistas(response.data);
-      } catch (error) {
-        console.log(error);
-        setErrorMessage("Error al cargar los artistas");
-      }
-    };
+  const handleArtistSearch = async (artistName) => {
+    if (!artistName) {
+      setArtistResults([]); // Limpiar resultados si no hay entrada
+      return;
+    }
+    
+    try {
+      const response = await axios.get(`http://localhost:5005/api/artists/search?artist=${artistName}`);
 
-    fetchArtistas();
-  }, []);
-
-  // Gestionar el cambio en el campo de búsqueda de artistas
-  const handleArtistInputChange = (e) => {
-    const { value } = e.target;
-    setEvento((prevEvento) => ({
-      ...prevEvento,
-      artista: value,
-    }));
-
-    // Filtrar la lista de artistas según la entrada del usuario
-    const filtered = artistas.filter((artista) =>
-      artista.nombre.toLowerCase().includes(value.toLowerCase())
-    );
-    setFilteredArtistas(filtered);
+      const artists = response.data; 
+      //limitamos el numero de resultados haciendo un slice sobre el resultado total
+      setArtistResults(artists.slice(0, 5)); 
+    } catch (error) {
+      console.error("Error fetching artist search results:", error);
+    }
   };
 
-  // Seleccionar un artista de las sugerencias
-  const handleArtistSelect = (artista) => {
+
+  const handleArtistSelect = (artist) => {
     setEvento((prevEvento) => ({
       ...prevEvento,
-      artista: artista.nombre,
+      artista: artist.name, // Asignar el nombre del artista seleccionado
     }));
-    setFilteredArtistas([]);
+    setArtistSearch(artist.name); // Actualizar el input con el nombre del artista seleccionado
+    setArtistResults([]); // Limpiar los resultados
   };
+  
 
   // Gestionar el cambio de los campos del formulario
   const handleChange = (e) => {
@@ -173,28 +159,27 @@ function CrearEvento({ artistaId, artistaNombre}) {
 
         <br />
 
-        <div>
-          <label>Artista:</label>
-          <input
-            type="text"
-            name="artista"
-            value={evento.artista}
-            onChange={handleArtistInputChange}
+                <div>
+                  <p>Artista invitado:</p>
+          <input 
+            type="text" 
+            value={artistSearch} 
+            onChange={(e) => {
+              const searchValue = e.target.value;
+              setArtistSearch(searchValue); 
+              //llama a la funcion de busqueda
+              handleArtistSearch(searchValue);
+            }} 
+            placeholder="Buscar artista..."
           />
-          {/* Mostrar sugerencias de artistas */}
-          {filteredArtistas.length > 0 && (
-            <ul>
-              {filteredArtistas.map((artista) => (
-                <li
-                  key={artista._id}
-                  onClick={() => handleArtistSelect(artista)}
-                  style={{ cursor: "pointer" }}
-                >
-                  {artista.nombre}
-                </li>
-              ))}
-            </ul>
-          )}
+          <ul>
+            {//mostramos los posibles resultados
+            artistResults.map((artist) => (
+              <li key={artist.name} onClick={() => handleArtistSelect(artist)}>
+                {artist.name}
+              </li>
+            ))}
+          </ul>
         </div>
 
         <br />

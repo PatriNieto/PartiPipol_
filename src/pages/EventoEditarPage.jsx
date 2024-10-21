@@ -24,10 +24,12 @@ function EventoEditarPage() {
 
   const [evento, setEvento] = useState({ ...DEFAULT_EVENTO_FORM_VALUES });
   const [loading, setLoading] = useState(true);
-  const [artistas, setArtistas] = useState([]);
-
-  const [filteredArtistas, setFilteredArtistas] = useState([]);
+  
+  const [submitting, setSubmitting] = useState(false);
+  const [artistSearch, setArtistSearch] = useState("");
+  const [artistResults, setArtistResults] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+
 
 
   //const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -36,48 +38,67 @@ function EventoEditarPage() {
 
   const navigate = useNavigate();
 
+  const handleArtistSearch = async (artistName) => {
+    if (!artistName) {
+      setArtistResults([]); // Limpiar resultados si no hay entrada
+      return;
+    }
+    
+    try {
+      const response = await axios.get(`http://localhost:5005/api/artists/search?artist=${artistName}`);
 
-
-  const handleArtistInputChange = (e) => {
-    const { value } = e.target;
-    setEvento((prevEvento) => ({
-      ...prevEvento,
-      artista: value,
-    }));
-
-    // Filtrar la lista de artistas según la entrada del usuario
-    const filtered = artistas.filter((artista) =>
-      artista.nombre.toLowerCase().includes(value.toLowerCase())
-    );
-    setFilteredArtistas(filtered);
+      const artists = response.data; 
+      //limitamos el numero de resultados haciendo un slice sobre el resultado total
+      setArtistResults(artists.slice(0, 5)); 
+    } catch (error) {
+      console.error("Error fetching artist search results:", error);
+    }
   };
 
-    // Seleccionar un artista de las sugerencias
-    const handleArtistSelect = (artista) => {
-      setEvento((prevEvento) => ({
-        ...prevEvento,
-        artista: artista._id,
-      }));
-      setFilteredArtistas([]);
-    };
 
-
+  const handleArtistSelect = (artist) => {
+    setEvento((prevEvento) => ({
+      ...prevEvento,
+      artista: artist.name, // Asignar el nombre del artista seleccionado
+    }));
+    setArtistSearch(artist.name); // Actualizar el input con el nombre del artista seleccionado
+    setArtistResults([]); // Limpiar los resultados
+  };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    setSubmitting(true);
 
-    const requestBody = {
-      ...evento,
-    };
+    const token = localStorage.getItem("authToken");
 
+    const eventoData = { ...evento };
+
+    // Si el artista está vacío, no lo incluimos en el objeto que se enviará
+    if (eventoData.artista === '') {
+      delete eventoData.artista; // Eliminar el campo artista si está vacío
+    }
+
+    console.log(eventoData); 
+    // Hacemos llamada PUT al servidor en la dirección
     axios
-      .put(`${API_URL}/api/eventos/${eventoId}`, requestBody)
+      .put(`${API_URL}/api/eventos/${eventoId}`, eventoData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then(() => {
-        console.log("llegamos")
-        navigate(`/eventos`)})
-      .catch((error) => console.log(error));
+        // Resetear el estado para limpiar los inputs
+        setEvento({ ...DEFAULT_EVENTO_FORM_VALUES });
+        setSubmitting(false);
+        navigate("/eventos");
+      })
+      .catch((error) => {
+        console.log(error);
+        setSubmitting(false);
+      });
   };
-
    const handleBorrarEvento = () => {
     axios
       .delete(`${API_URL}/api/eventos/${evento._id}`)
@@ -85,6 +106,7 @@ function EventoEditarPage() {
       .catch((error) => console.log(error));
   }; 
  
+  //llamada para obtener los datos del evento 
   useEffect(() => {
     const getEvento = () => {
       axios
@@ -94,7 +116,10 @@ function EventoEditarPage() {
           setEvento(
             response.data
           );
+          setArtistSearch(response.data.artista)
           setLoading(false);
+          console.log(response.data)
+    
         })
         .catch((error) => console.log(error));
     };
@@ -109,7 +134,7 @@ function EventoEditarPage() {
    const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Solo tenemos un caso especial en calle y ciudad que componen dirección
+    // Tenemos un caso especial en calle y ciudad que componen dirección
     if (name === "calle" || name === "ciudad") {
       setEvento((prevEvento) => ({
         ...prevEvento,
@@ -118,13 +143,15 @@ function EventoEditarPage() {
           [name]: value,
         },
       }));
-    } else {
+    } else{
       setEvento((prevEvento) => ({
         ...prevEvento,
         [name]: value,
       }));
     }
   };
+
+
 
 
   
@@ -197,28 +224,28 @@ function EventoEditarPage() {
         <br />
 
         <div>
-          <label>Artista:</label>
-          <input
-            type="text"
-            name="artista"
-            value={evento.artista.nombre}
-            onChange={handleArtistInputChange}
-          />
-          {/* Mostrar sugerencias de artistas */}
-          {filteredArtistas.length > 0 && (
-            <ul>
-              {filteredArtistas.map((artista) => (
-                <li
-                  key={artista._id}
-                  onClick={() => handleArtistSelect(artista)}
-                  style={{ cursor: "pointer" }}
-                >
-                  {artista.nombre}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+        <p>Artista invitado:</p>
+
+      <input 
+        type="text" 
+        value={artistSearch} 
+        onChange={(e) => {
+          const searchValue = e.target.value;
+          setArtistSearch(searchValue); 
+          //llama a la funcion de busqueda
+          handleArtistSearch(searchValue);
+        }} 
+        placeholder="Buscar artista..."
+      />
+  <ul>
+    {//mostramos los posibles resultados
+    artistResults.map((artist) => (
+      <li key={artist.name} onClick={() => handleArtistSelect(artist)}>
+        {artist.name}
+      </li>
+    ))}
+  </ul>
+</div>
 
         <br />
 

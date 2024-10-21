@@ -79,12 +79,12 @@ function MyNavbar() {
           <Offcanvas.Title>NOMBRE_DE_USUARIO</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-        <Nav.Link>
+       {/*  <Nav.Link>
           Favoritos
         </Nav.Link>
         <Nav.Link>
           Siguiendo
-        </Nav.Link>
+        </Nav.Link> */}
       {!isLoggedIn &&  
         <Nav.Link
         as={Link}
@@ -97,8 +97,13 @@ function MyNavbar() {
         to="/login">
           Acceso
         </Nav.Link>}
-        
-        {!isLoggedIn && 
+        {isLoggedIn &&  
+        <Nav.Link
+        as={Link}
+        to="/profile-page">
+          Perfil
+        </Nav.Link>}
+        {isLoggedIn && 
           <Nav.Link
           as={Link}
           to="/evento-crear">
@@ -107,17 +112,7 @@ function MyNavbar() {
         }
         
 
-        <Nav.Link
-        as={Link}
-        to="/artista-crear">
-          Añadir artista
-        </Nav.Link>
-        {isLoggedIn &&  
-        <Nav.Link
-        as={Link}
-        to="/profile-page">
-          Perfil
-        </Nav.Link>}
+   
         {isLoggedIn &&  
         <Nav.Link
         onClick={handleLogOut}>
