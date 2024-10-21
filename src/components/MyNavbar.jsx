@@ -21,7 +21,10 @@ function MyNavbar() {
   const handleShow = () => setShow(true);
   const navigate = useNavigate()
   //nos pasamos la variable de AuthContext
-  const { isLoggedIn, authenticateUser } = useContext(AuthContext)
+  const { isLoggedIn, authenticateUser, loggedUser } = useContext(AuthContext)
+
+ 
+  
 
   const handleLogOut = async () =>{
 
@@ -60,7 +63,7 @@ function MyNavbar() {
         <Navbar.Collapse className="justify-content-end">
           <Navbar.Text
           onClick={handleShow}>
-            Signed in as: <a href="#login">Patri</a> {/* cambiar link */} 
+            Signed in as: <a href="#login">{loggedUser}</a> {/* cambiar link */} 
           </Navbar.Text>
         </Navbar.Collapse>
       </Container>
@@ -76,7 +79,7 @@ function MyNavbar() {
 
 
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>NOMBRE_DE_USUARIO</Offcanvas.Title>
+          <Offcanvas.Title>{loggedUser}</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
        {/*  <Nav.Link>

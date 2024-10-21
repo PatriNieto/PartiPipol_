@@ -13,6 +13,8 @@ function AuthWrapper(props) {
   const  [isLoggedIn, setIsLoggedIn] = useState(false)
   //quien esta logueado?
   const [loggedUserId, setLoggedUserId] = useState(null)
+  //el nombre de quien esta logueado para mostrarlo en el perfil y la barra de navegaciónç
+  const [loggedUser, setLoggedUser] = useState(null);
 
   //le damos un tiempo para validar el token antes de pintar la aplicaciojn
   const [isValidatingToken, setIsValidatingToken] = useState(true)
@@ -39,6 +41,7 @@ function AuthWrapper(props) {
       //el token es ok:
       setIsLoggedIn(true)
       setLoggedUserId(response.data._id)
+      setLoggedUser(response.data.username)
       setIsValidatingToken(false)
     } catch (error) {
       //el token no es valido o no existe
@@ -51,7 +54,7 @@ function AuthWrapper(props) {
 
   //creamos un objeto con estas variables
   const passedContext = {
-    isLoggedIn,loggedUserId,authenticateUser
+    isLoggedIn,loggedUserId,loggedUser,authenticateUser
   }
 
   if(isValidatingToken){  
