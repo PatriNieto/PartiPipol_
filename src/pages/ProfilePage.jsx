@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../context/auth.context';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 
 function ProfilePage() {
@@ -37,6 +38,14 @@ function ProfilePage() {
       <p>Email: {userData.email}</p>
       <img src={userData.imagenDePerfil} alt="imagen-perfil" />
       
+
+{/*       solo podremos cambiar la imagen de perfil y la contraseña
+ */}      <Link
+          to={`/profile-page/editar`}>
+          <button>
+            Editar Perfil
+          </button>
+          </Link>
 
     </div>
   )

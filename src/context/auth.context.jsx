@@ -8,7 +8,6 @@ const AuthContext = createContext()
 
 //envoltorio:
 function AuthWrapper(props) {
-
   //esta logueado?
   const  [isLoggedIn, setIsLoggedIn] = useState(false)
   //quien esta logueado?

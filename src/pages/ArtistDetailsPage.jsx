@@ -65,7 +65,8 @@ useEffect(() => {
 <>
 
     <div>{artist.name}</div>
-    <img src={artist.image[1][`#text`]} alt="artist-pic-1" />
+   {/*  //la api no tiene buenos enlaces para esto
+    <img src={artist.image[1][`#text`]} alt="artist-pic-1" /> */}
     <div>Oyentes totales: {artist.stats.listeners}</div>
 
 {/*     

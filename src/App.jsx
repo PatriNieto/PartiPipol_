@@ -19,6 +19,7 @@ import EventoDetailsPage from "./pages/EventoDetailsPage";
 import EventoEditarPage from "./pages/EventoEditarPage";
 import ArtistsPage from "./pages/ArtistsPage";
 import ArtistDetailsPage from "./pages/ArtistDetailsPage";
+import ProfilePageEditar from "./pages/ProfilePageEditar";
 
 
 function App() {
@@ -50,6 +51,11 @@ function App() {
         <Route path="/profile-page" element={
           <Private>
             <ProfilePage />
+          </Private>
+          } />
+           <Route path="/profile-page/editar" element={
+          <Private>
+            <ProfilePageEditar />
           </Private>
           } />
 
