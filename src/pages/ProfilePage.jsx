@@ -35,6 +35,8 @@ function ProfilePage() {
 
       <h1>{userData.username}</h1>
       <p>Email: {userData.email}</p>
+      <img src={userData.imagenDePerfil} alt="imagen-perfil" />
+      
 
     </div>
   )

@@ -26,21 +26,8 @@ function ArtistsPage() {
 
   return (
     <div className="">
- {/*      <CohortFilterBar
-        campusQuery={campusQuery}
-        setCampusQuery={setCampusQuery}
-        programQuery={programQuery}
-        setProgramQuery={setProgramQuery}
-        handleChange={handleChange}
-      /> */}
 
-     {/*  <div className="flex justify-between items-center p-2 font-bold border-b">
-        <span style={{ flexBasis: "25%" }}>Cohort</span>
-        <span style={{ flexBasis: "15%" }}>Program</span>
-        <span style={{ flexBasis: "15%" }}>Format</span>
-        <span style={{ flexBasis: "15%" }}>Ongoing</span>
-        <span style={{ flexBasis: "25%" }}>Id</span>
-      </div> */}
+
       <p>Artistas más populares:</p>
       {artists &&
         artists.map(
@@ -50,12 +37,16 @@ function ArtistsPage() {
                 {...artista}
                 
               /> */
-              
-            <div>
+              <Link
+              key={index}
+              to={`/artists/${artist.name}`}>
+               <div>
               <h2>
                 {artist.name}
               </h2>
               </div>
+              </Link>
+           
           )
         )}
     </div>

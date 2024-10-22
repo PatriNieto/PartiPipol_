@@ -18,6 +18,7 @@ import EventosPage from "./pages/EventosPage";
 import EventoDetailsPage from "./pages/EventoDetailsPage";
 import EventoEditarPage from "./pages/EventoEditarPage";
 import ArtistsPage from "./pages/ArtistsPage";
+import ArtistDetailsPage from "./pages/ArtistDetailsPage";
 
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
  */}        
         <Route path="/artists" element={<ArtistsPage />} />
         <Route path="/artistas/:artistaId" element={<ArtistaDetailsPage />} />
+        <Route path="/artists/:artistName" element={<ArtistDetailsPage />} />
         <Route path="/artistas/editar/:artistaId" element={<ArtistaEditarPage />} />
         <Route path="*" element={<ErrorPage />} />
         <Route path="/profile-page" element={
