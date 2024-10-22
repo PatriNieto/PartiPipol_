@@ -25,7 +25,7 @@ function Login() {
         username, password
       }
 
-      const response = await axios.post("http://localhost:5005/api/auth/login", userCredentials)
+      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/auth/login`, userCredentials)
       console.log(response)
 
       localStorage.setItem("authToken", response.data.authToken)

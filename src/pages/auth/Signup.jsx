@@ -23,7 +23,7 @@ function Signup() {
       const newUser = {
         email, password, username
       }
-      await axios.post("http://localhost:5005/api/auth/signup", newUser)
+      await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/auth/signup`, newUser)
       navigate("/login")
     } catch (error) {
       console.log(error)

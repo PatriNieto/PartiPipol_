@@ -60,11 +60,20 @@ function MyNavbar() {
             >Artistas</Nav.Link>
         </Nav>
         </Navbar.Collapse>
+
         <Navbar.Collapse className="justify-content-end">
+        {isLoggedIn ?
+         <Navbar.Text
+         onClick={handleShow}>
+           Sesión iniciada: <a href="#login">{loggedUser}</a> {/* cambiar link */} 
+         </Navbar.Text> : 
           <Navbar.Text
           onClick={handleShow}>
-            Signed in as: <a href="#login">{loggedUser}</a> {/* cambiar link */} 
+            Usuario no logueado
+             <a href="#login">{loggedUser}</a> {/* cambiar link */} 
           </Navbar.Text>
+        }
+         
         </Navbar.Collapse>
       </Container>
     </Navbar>
