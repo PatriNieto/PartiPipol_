@@ -39,7 +39,8 @@ function App() {
         <Route path="/evento-crear" element={<CrearEvento />} />
         <Route path="/eventos/editar/:eventoId" element={<EventoEditarPage />} />
         <Route path="/artista-crear" element={<CrearArtista />} />
-        <Route path="/artistas" element={<ArtistasPage />} />
+{/*         <Route path="/artistas" element={<ArtistasPage />} />
+ */}        
         <Route path="/artists" element={<ArtistsPage />} />
         <Route path="/artistas/:artistaId" element={<ArtistaDetailsPage />} />
         <Route path="/artistas/editar/:artistaId" element={<ArtistaEditarPage />} />

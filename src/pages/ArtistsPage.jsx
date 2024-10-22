@@ -9,26 +9,7 @@ import { Link } from "react-router-dom";
 
 function ArtistsPage() {
   const [artists, setArtists] = useState([]);
-  //const [campusQuery, setCampusQuery] = useState("");
-  //const [programQuery, setProgramQuery] = useState("");
 
- /*  const handleChange = (event, updateState) => {
-    updateState(event.target.value);
-  }; */
-
-/*   useEffect(() => {
-    let queryString = "";
-    if (campusQuery) queryString += `campus=${campusQuery}&`;
-    if (programQuery) queryString += `program=${programQuery}`;
-
-    axios
-      .get(`${API_URL}/api/cohorts?${queryString}`)
-      .then((response) => {
-        setCohorts(response.data);
-      })
-      .catch((error) => console.log(error));
-  }, [campusQuery, programQuery]);
- */
   const getPopularArtists = () => {
     axios
       .get(`https://ws.audioscrobbler.com/2.0/?method=chart.getTopArtists&api_key=ca7b9b089da8af348829efb05cb36c40&format=json`)

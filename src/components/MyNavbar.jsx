@@ -56,7 +56,7 @@ function MyNavbar() {
             <Nav.Link className="fs-7" as={Link} to="/eventos">Eventos</Nav.Link>
             <Nav.Link 
             as={Link} 
-            to="/artistas"
+            to="/artists"
             >Artistas</Nav.Link>
         </Nav>
         </Navbar.Collapse>
