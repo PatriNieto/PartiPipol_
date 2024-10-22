@@ -30,7 +30,7 @@ function CrearArtista() {
           instagram
         }
       }
-      await axios.post("http://localhost:5005/api/artistas/artista", newArtista)
+      await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/artistas/artista`, newArtista)
       navigate("/")
     } catch (error) {
       console.log(error)

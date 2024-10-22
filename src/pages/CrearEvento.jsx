@@ -75,7 +75,7 @@ function CrearEvento({ artistaNombre}) {
     }
     
     try {
-      const response = await axios.get(`http://localhost:5005/api/artists/search?artist=${artistName}`);
+      const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/artists/search?artist=${artistName}`);
 
       const artists = response.data; 
       //limitamos el numero de resultados haciendo un slice sobre el resultado total

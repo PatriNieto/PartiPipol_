@@ -14,7 +14,7 @@ function ProfilePage() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5005/api/user/${loggedUserId}`);
+        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/user/${loggedUserId}`);
         setUserData(response.data);
       } catch (error) {
         console.log(error);

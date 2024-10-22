@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 //import CohortFilterBar from "../components/CohortFilterBar";
 //import CohortCard from "../components/CohortCard";
 
-// Import the string from the .env with URL of the API/server - http://localhost:5005
 
 
 function ArtistsPage() {
