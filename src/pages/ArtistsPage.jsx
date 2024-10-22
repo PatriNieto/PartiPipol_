@@ -41,7 +41,7 @@ function ArtistsPage() {
         <span style={{ flexBasis: "15%" }}>Ongoing</span>
         <span style={{ flexBasis: "25%" }}>Id</span>
       </div> */}
-
+      HOLA
       {artists &&
         artists.map(
           (artist, index) => (
