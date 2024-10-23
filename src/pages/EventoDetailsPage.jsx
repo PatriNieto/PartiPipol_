@@ -171,11 +171,16 @@ const handleDeleteComentario = (comentarioId) =>{
       comentarios.map((comentario)=>(
         <div 
         key={comentario._id}>
-          <p>escrito por {comentario.usuario}</p>
+          <p>escrito por {comentario.usuario.username}</p>
+          <img 
+          src={comentario.usuario.imagenDePerfil} 
+          alt="user-pic"
+          style={{ width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover",
+            objectPosition: "center" }} />
           <p> {comentario.comentario}</p>
           {/* opcion borrar comentario para el usuario , render condicionado a que el usuario coincida*/
            
-           comentario.usuario == loggedUserId && (
+           comentario.usuario._id == loggedUserId && (
             <button
             type="button"
             onClick={()=>handleDeleteComentario(comentario._id)}>
