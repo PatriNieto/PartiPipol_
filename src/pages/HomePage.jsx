@@ -16,8 +16,6 @@ function HomePage() {
     updateState(event.target.value);
   };
 
-
-
 /*   const getAllEventos = () => {
     axios
       .get(`${API_URL}/api/eventos`)
@@ -57,7 +55,7 @@ useEffect(() => {
   <SearchBar 
       nombreQuery={nombreQuery}
       setNombreQuery={setNombreQuery}
-      handleChange={handleChange}
+      placeholder={"Escribe el nombre de un evento o de un artista"}
       />
 
 {eventos ?

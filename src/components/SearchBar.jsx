@@ -4,7 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function SearchBar({
   nombreQuery,
   setNombreQuery,
-  handleChange
+  placeholder
+  //handleChange
 }) {
   return (
     <div className='d-flex justify-content-center'>
@@ -13,7 +14,7 @@ function SearchBar({
       type="text"
       name="nombre"
       value={nombreQuery}
-      placeholder='Introduce el nombre de un evento o un artista...'
+      placeholder={placeholder}
       onChange={(e) =>setNombreQuery(e.target.value)} />
     </div>
   )

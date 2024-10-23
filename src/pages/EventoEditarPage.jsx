@@ -36,7 +36,39 @@ function EventoEditarPage() {
   //traemos los datos de logueo para poder compararlo cin el promotor del evento
   const { loggedUserId } = useContext(AuthContext);
 
+  //cloudinary
+  // below state will hold the image URL from cloudinary. This will come from the backend.
+const [imageUrl, setImageUrl] = useState(null); 
+const [isUploading, setIsUploading] = useState(false); // for a loading animation effect
 
+  const handleFileUpload = async (event) => {
+    // console.log("The file to be uploaded is: ", e.target.files[0]);
+  
+    if (!event.target.files[0]) {
+      // to prevent accidentally clicking the choose file button and not selecting a file
+      return;
+    }
+  
+    setIsUploading(true); // to start the loading animation
+  
+    const uploadData = new FormData(); // images and other files need to be sent to the backend in a FormData
+    uploadData.append("image", event.target.files[0]);
+    //                   |
+    //     this name needs to match the name used in the middleware in the backend => uploader.single("image")
+  
+    try {
+      const response = await axios.post(`${API_URL}/api/upload/imagen-evento`, uploadData)
+      // !IMPORTANT: Adapt the request structure to the one in your proyect (services, .env, auth, etc...)
+  
+      setImageUrl(response.data.imageUrl);
+      //                          |
+      //     this is how the backend sends the image to the frontend => res.json({ imageUrl: req.file.path });
+  
+      setIsUploading(false); // to stop the loading animation
+    } catch (error) {
+      navigate("/error");
+    }
+  };
 
   //const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
@@ -85,7 +117,9 @@ function EventoEditarPage() {
     if (eventoData.artista === '') {
       delete eventoData.artista; // Eliminar el campo artista si está vacío
     }
-
+    if (imageUrl) {
+      eventoData.image = imageUrl;
+    }
     console.log(eventoData); 
     // Hacemos llamada PUT al servidor en la dirección
     axios
@@ -119,6 +153,9 @@ function EventoEditarPage() {
         const response = await axios.get(`${API_URL}/api/eventos/${eventoId}`);
         setEvento(response.data);
         setArtistSearch(response.data.artista);
+        if (response.data.image) {
+          setImageUrl(response.data.image);
+        }
         setLoading(false);
   
         // Verifica si el usuario es el creador del evento
@@ -283,7 +320,22 @@ function EventoEditarPage() {
           value={evento.descripcion}
           onChange={handleChange}
         />
+          <div>
+  <label>Sube un flyer o una imagen representativa del evento: </label>
+  <input
+    type="file"
+    name="image"
+    onChange={handleFileUpload}
+    disabled={isUploading}
+  />
+  {/* below disabled prevents the user from attempting another upload while one is already happening */}
+</div>;
 
+{/* to render a loading message or spinner while uploading the picture */}
+{isUploading ? <h3>... uploading image</h3> : null}
+
+{/* below line will render a preview of the image from cloudinary */}
+{imageUrl ? (<div><img src={imageUrl} alt="img" width={200} /></div>) : null}
         <br />
         <label>Precio:</label>
         <input

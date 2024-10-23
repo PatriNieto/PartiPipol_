@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../context/auth.context";
+import BotonAsistencia from "../components/BotonAsistencia";
 
 
 // Import the string from the .env with URL of the API/server - http://localhost:5005
@@ -95,6 +96,7 @@ const handleDeleteComentario = (comentarioId) =>{
               <h1 className="text-2xl font-semibold mb-4">
                 {evento.nombre}
               </h1>
+              <img src={evento.image} alt="imagen-evento" />
               <p>{evento.fecha}</p>
               <br />
               <p className="mb-2 border-b pb-2">
@@ -130,6 +132,13 @@ const handleDeleteComentario = (comentarioId) =>{
               )}
 
               <p>Precio: {evento.precio}€</p>
+              <p>Asistentes: {evento.asistentes.length}</p>
+
+              <BotonAsistencia
+              eventoId={eventoId}
+              userId={loggedUserId}
+              onToggleAsistencia={getEvento}
+              />
             </>
           )}
 
