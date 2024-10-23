@@ -38,8 +38,15 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/eventos" element={<EventosPage />} />
         <Route path="/eventos/:eventoId" element={<EventoDetailsPage />} />
-        <Route path="/evento-crear" element={<CrearEvento />} />
-        <Route path="/eventos/editar/:eventoId" element={<EventoEditarPage />} />
+        <Route path="/evento-crear" element={
+          <Private>
+            <CrearEvento />
+          </Private>} />
+        <Route path="/eventos/editar/:eventoId" element={
+          <Private>
+            <EventoEditarPage />
+          </Private>
+          } />
         <Route path="/artista-crear" element={<CrearArtista />} />
 {/*         <Route path="/artistas" element={<ArtistasPage />} />
  */}        

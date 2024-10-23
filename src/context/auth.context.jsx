@@ -30,7 +30,7 @@ function AuthWrapper(props) {
     try {
       //buscamos el token 
       const authToken = localStorage.getItem("authToken")
-      
+      console.log("authToken", authToken)
       //le pasamos el token encontrado  como segundo argumento para que verify lo pueda verificar 
       const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/auth/verify`, {
         headers : { authorization:`Bearer ${authToken}`}

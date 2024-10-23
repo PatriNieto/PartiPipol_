@@ -6,8 +6,6 @@ import { Link } from 'react-router-dom';
 
 function ProfilePage() {
 
-
-
   const [dataOnlyForLoggedUsers, setData] = useState(null)
   const { loggedUserId } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);

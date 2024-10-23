@@ -1,6 +1,8 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../context/auth.context";
+
 
 // Import the string from the .env with URL of the API/server - http://localhost:5005
 const API_URL = import.meta.env.VITE_SERVER_URL;
@@ -9,8 +11,15 @@ function EventoDetailsPage() {
   const [evento, setEvento] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const { eventoId } = useParams();
+  //variables para CRD comentarios
+  const [comentarios, setComentarios] = useState([]);
+  const [nuevoComentario, setNuevoComentario] = useState("");
 
+  const { eventoId } = useParams();
+  
+  const { loggedUserId } = useContext(AuthContext)
+
+  console.log(loggedUserId)
   const getEvento = useCallback(() => {
     axios
       .get(`${API_URL}/api/eventos/${eventoId}`)
@@ -21,11 +30,60 @@ function EventoDetailsPage() {
       .catch((error) => console.log(error));
   }, [eventoId]);
 
+  //funcion getComentarios del evento
+  const getComentarios = useCallback(() => {
+    axios
+      .get(`${API_URL}/api/comentarios/${eventoId}`)
+      .then((response) => {
+        setComentarios(response.data);
+      })
+      .catch((error) => console.log(error));
+  }, [eventoId]);
+
+  //llamada a post comentarios
+  const token = localStorage.getItem("authToken");
+
+const handleComentarioSubmit=(e)=>{
+  e.preventDefault()
+
+  //nos aseguramos que el comentario no esta vacio antes de enviar y no permitimos entrar en la llamada a
+  if(!nuevoComentario.trim()){
+    alert("Por favor, escribe un comentario antes de enviar")
+    return
+  }
+
+  axios.post(`${API_URL}/api/comentarios/${eventoId}`,{comentario:nuevoComentario},{
+    headers:{
+      Authorization: `Bearer ${token}`}
+  })
+  .then((response)=>{
+    setComentarios([...comentarios, response.data.data])
+    //limpiamos el formulario
+    setNuevoComentario("")
+  })
+  .catch((error)=>(
+    console.log(error)
+  ))
+}
+
+//funcion delete
+const handleDeleteComentario = (comentarioId) =>{
+  axios.delete(`${API_URL}/api/comentarios/${comentarioId}`,{
+    headers:{
+      Authorization: `Bearer ${token}`}
+  })
+  .then(()=>{
+    getComentarios()
+    //setComentarios(prevComentarios => prevComentarios.filter(comentario => comentario._id !== comentarioId));    
+  })
+  .catch((error)=> console.log(error))
+}
+
   useEffect(() => {
-    getEvento();
-    //getStudents();
-    setLoading(false);
-  }, [eventoId, getEvento]);
+    getEvento()
+    getComentarios()
+    setLoading(false)
+  }, [eventoId, getEvento, getComentarios]);
 
   return (
     <div>
@@ -89,6 +147,47 @@ function EventoDetailsPage() {
 
         {loading && <div>Loading...</div>}
 
+{/*         -----------------------------------------------------seccion de comentarios
+ */}
+      <h2>Comentarios: </h2>
+      <form 
+      onSubmit={handleComentarioSubmit}>
+{/*         solo se puede añadir un texto como comentario
+ */}      
+  <textarea 
+  value={nuevoComentario}
+  onChange={(e)=>setNuevoComentario(e.target.value)}
+  placeholder="Escribe tu comentario..."
+  />
+  <button
+  type="submit">
+    Agregar Comentario
+  </button>
+
+
+  {/* ahora seccion donde se muestran los comentarios */}
+  <div>
+    {
+      comentarios.map((comentario)=>(
+        <div 
+        key={comentario._id}>
+          <p>escrito por {comentario.usuario}</p>
+          <p> {comentario.comentario}</p>
+          {/* opcion borrar comentario para el usuario , render condicionado a que el usuario coincida*/
+           
+           comentario.usuario == loggedUserId && (
+            <button
+            type="button"
+            onClick={()=>handleDeleteComentario(comentario._id)}>
+              eliminar
+            </button>
+          ) 
+          }
+        </div>
+      ))
+    }
+  </div>
+ </form>
       </div>
 
   );

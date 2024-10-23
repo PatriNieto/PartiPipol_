@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../context/auth.context";
 
 
 // Import the string from the .env with URL of the API/server - http://localhost:5005
@@ -29,6 +30,11 @@ function EventoEditarPage() {
   const [artistSearch, setArtistSearch] = useState("");
   const [artistResults, setArtistResults] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+
+  //creamos una variable para gestionar que solo el creador del evento, promotor, sea capaz de modificarlo
+  const [isOwner, setIsOwner] = useState(false);
+  //traemos los datos de logueo para poder compararlo cin el promotor del evento
+  const { loggedUserId } = useContext(AuthContext);
 
 
 
@@ -108,24 +114,35 @@ function EventoEditarPage() {
  
   //llamada para obtener los datos del evento 
   useEffect(() => {
-    const getEvento = () => {
-      axios
-        .get(`${API_URL}/api/eventos/${eventoId}`)
-        .then((response) => {
-
-          setEvento(
-            response.data
-          );
-          setArtistSearch(response.data.artista)
-          setLoading(false);
-          console.log(response.data)
-    
-        })
-        .catch((error) => console.log(error));
+    const fetchEvento = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/api/eventos/${eventoId}`);
+        setEvento(response.data);
+        setArtistSearch(response.data.artista);
+        setLoading(false);
+  
+        // Verifica si el usuario es el creador del evento
+        if (response.data.promoter === loggedUserId) {
+          setIsOwner(true);
+        } else {
+          setIsOwner(false);
+          
+            alert("No puedes modificar este evento porque no eres el creador.")
+            navigate("/eventos")
+        }
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+        if (error) {
+          return <div>{error}</div>;
+        }
+        setError("Error al cargar el evento.");
+        setLoading(false); // Asegúrate de detener el loading en caso de error
+      }
     };
-
-    getEvento();
-  }, [eventoId]);
+  
+    fetchEvento();
+  }, [eventoId, loggedUserId]);
 
   if (loading) return <div>Loading...</div>;
 
@@ -151,7 +168,8 @@ function EventoEditarPage() {
     }
   };
 
-
+  // Manejo de error o redirección si no es el propietario
+  
 
 
   
