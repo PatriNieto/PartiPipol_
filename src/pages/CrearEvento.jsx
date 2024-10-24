@@ -72,6 +72,13 @@ const handleFileUpload = async (event) => {
   }
 };
 
+const handleFechaChange = (event) => {
+  const fechaDate = event.target.value;
+  setEvento((prevEvento) => ({
+    ...prevEvento,
+    fecha: fechaDate,
+  }));
+};
 
   // Ejecución al enviar formulario de creación de evento
   const handleSubmit = (e) => {
@@ -179,11 +186,10 @@ const handleFileUpload = async (event) => {
         <br />
 
         <label>Fecha del evento:</label>
-        <input
-          type="text"
-          name="fecha"
-          value={evento.fecha}
-          onChange={handleChange}
+        <input 
+          type="date" 
+        // Convertir a string ISO para el campo de fecha - solucion consultada para el manejo de fechas
+          onChange={handleFechaChange} 
         />
 
         <br />

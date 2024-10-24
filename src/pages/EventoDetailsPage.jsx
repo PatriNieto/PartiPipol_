@@ -3,6 +3,8 @@ import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../context/auth.context";
 import BotonAsistencia from "../components/BotonAsistencia";
+//funcion libreria fechas
+import { format } from 'date-fns'; 
 
 
 // Import the string from the .env with URL of the API/server - http://localhost:5005
@@ -96,6 +98,11 @@ const handleDeleteComentario = (comentarioId) =>{
     return <div>No evento found</div>;
   }
 
+  //formateo fecha, probando libreria date-fns
+  //lo pongo condicional porque en los eventos ya creados me da problemas, si creo todo desde el deploy, no necesario? 
+  const formattedDate = evento.fecha ? format(new Date(evento.fecha), 'dd/MM/yyyy'): 'Fecha no disponible'
+
+
   return (
     <div>
    
@@ -107,7 +114,11 @@ const handleDeleteComentario = (comentarioId) =>{
                 {evento.nombre}
               </h1>
               <img src={evento.image} alt="imagen-evento" />
-              <p>{evento.fecha}</p>
+              {/* <p>{evento.fecha}</p> */}
+              <p className="mb-2 border-b pb-2">
+                <strong>Fecha del evento:</strong> {formattedDate}
+              </p>
+
               <br />
               <p className="mb-2 border-b pb-2">
                 <strong>Descripción:</strong> {evento.descripcion}

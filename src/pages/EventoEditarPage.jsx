@@ -187,9 +187,13 @@ const [isUploading, setIsUploading] = useState(false); // for a loading animatio
    // Gestionar el cambio de los campos del formulario
    const handleChange = (e) => {
     const { name, value } = e.target;
-
-    // Tenemos un caso especial en calle y ciudad que componen dirección
-    if (name === "calle" || name === "ciudad") {
+  
+    if (name === "fecha") {
+      setEvento((prevEvento) => ({
+        ...prevEvento,
+        fecha: value, // Guardar el valor de la fecha directamente
+      }));
+    } else if (name === "calle" || name === "ciudad") {
       setEvento((prevEvento) => ({
         ...prevEvento,
         direccion: {
@@ -197,13 +201,14 @@ const [isUploading, setIsUploading] = useState(false); // for a loading animatio
           [name]: value,
         },
       }));
-    } else{
+    } else {
       setEvento((prevEvento) => ({
         ...prevEvento,
         [name]: value,
       }));
     }
   };
+  
 
   // Manejo de error o redirección si no es el propietario
   
@@ -250,13 +255,12 @@ const [isUploading, setIsUploading] = useState(false); // for a loading animatio
         />
 
         <br />
-
         <label>Fecha del evento:</label>
-        <input
-          type="text"
-          name="fecha"
-          value={evento.fecha}
-          onChange={handleChange}
+        <input 
+          type="date" 
+          name="fecha" // Agrega el nombre para que se reconozca en handleChange
+          value={evento.fecha} // Vincula el valor al estado
+          onChange={handleChange} 
         />
 
         <br />
