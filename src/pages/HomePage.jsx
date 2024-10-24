@@ -91,6 +91,9 @@ useEffect(() => {
         )}
         </ul>
 </div>
+
+        <div
+        className=' text-center'>
         <Link
         to="/eventos"
         className='text-light p-5 min-vh-50'>
@@ -104,8 +107,11 @@ useEffect(() => {
         </Link>
         <div
           className='container bg-dark py-10'>
-            <h4>Eres promotor?
-              </h4>
+            <p
+            className='m-0'>
+            Eres promotor?
+            </p>
+            
         <Link
         to="/evento-crear"
         className='text-light p-5 min-vh-50'>
@@ -118,7 +124,7 @@ useEffect(() => {
         </Link>
         </div>
        
-        
+        </div>
     </>
   )
 }

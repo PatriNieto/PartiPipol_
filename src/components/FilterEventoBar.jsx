@@ -10,8 +10,11 @@ function FilterEventoBar({
   handleChange,
 }) {
   return  (
-    <div>
-      <div>
+    <div 
+ 
+    > 
+  
+      <div className="d-flex flex-column justify-content-center "> 
         <label htmlFor="ciudad" className="flex items-center">
           <span className="mr-2">Ciudad:</span>
           <select

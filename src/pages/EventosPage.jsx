@@ -15,6 +15,8 @@ function EventosPage() {
 
   const handleChange = (event, updateState) => {
     updateState(event.target.value);
+    if (!validateForm()) return;  
+    setSubmitting(true);
   };
 
   const getAllEventos = () => {
@@ -48,11 +50,10 @@ useEffect(() => {
 
   return (
     <>
-   <div className="row justify-content-center d-flex m-0 min-vh-100">
-    <div 
-    //id="container-crear-evento"
-    className="text-light col-12 col-md-8 col-lg-10 m-0 overflow-hidden">
+<div 
+className='container mt-5 min-vh-100'>    
 
+ <div className="sticky-top bg-dark p-3">
     <FilterEventoBar
     ciudadQuery={ciudadQuery}
     setCiudadQuery={setCiudadQuery}
@@ -60,8 +61,8 @@ useEffect(() => {
     setGeneroQuery={setGeneroQuery}
     handleChange={handleChange}
     />
-
-    
+</div>
+    <hr />
       {eventos ?
         eventos.map(
           (evento, index) => (
@@ -72,9 +73,9 @@ useEffect(() => {
               to={`/eventos/${evento._id}`}>
             <div>
 
-              <h2>
+              <h4>
                 {evento.nombre}
-              </h2>
+              </h4>
               <p>{evento.descripcion}</p>
 
               </div>
@@ -85,7 +86,7 @@ useEffect(() => {
         ) : (
           <p>No hay eventos creados</p>
         )}</div>
-        </div>
+
     </>
   );
 }

@@ -210,13 +210,24 @@ const [isUploading, setIsUploading] = useState(false); // for a loading animatio
   };
   
 
-  // Manejo de error o redirección si no es el propietario
-  
+  //validacion front en el envio de formulario:
+  const validateForm = () => {
+    const { nombre, fecha, direccion, descripcion, precio } = evento;
+    if (!nombre || !fecha || !direccion.calle || !direccion.ciudad || !descripcion || precio <= 0) {
+      setErrorMessage("Los campos marcados con (*) son obligatorios y el precio debe ser mayor que 0.");
+      setMessage("Los campos marcados con (*) son obligatorios y el precio debe ser mayor que 0.");
+
+      //setShowToast(true)
+      return false;
+    }
+    return true;
+  };  
 
 
   
   return (
-    <div>
+    <div 
+    className="container">
       <h3 className="text-2xl font-semibold text-gray-700 mb-6 sticky left-0">
         Actualizar Evento
       </h3>
@@ -333,7 +344,7 @@ const [isUploading, setIsUploading] = useState(false); // for a loading animatio
           onChange={handleChange}
         />
           <div>
-  <label>Sube un flyer o una imagen representativa del evento: </label>
+  <label>Sube una imagen: </label>
   <input
     type="file"
     name="image"
@@ -341,7 +352,7 @@ const [isUploading, setIsUploading] = useState(false); // for a loading animatio
     disabled={isUploading}
   />
   {/* below disabled prevents the user from attempting another upload while one is already happening */}
-</div>;
+</div>
 
 {/* to render a loading message or spinner while uploading the picture */}
 {isUploading ? <h3>... uploading image</h3> : null}

@@ -37,7 +37,7 @@ function Signup() {
   };
 
   return (
-    <div className="container min-vh-100 d-flex flex-column justify-content-center align-items-center">
+    <div className="container min-vh-100 d-flex flex-column justify-content-center align-items-center text-center">
 
 
       <h3
@@ -93,14 +93,14 @@ function Signup() {
       </form>
       <hr />
       <p
-      className="w-75">Si ya tienes una cuenta &nbsp;
+      className="w-75">Si ya estás registrado &nbsp;
      <Link
      to="/login">
      <strong>  
-      recuerdanos
+      accede
       </strong>
      </Link>
-     &nbsp;tus datos de usuario.</p>
+     &nbsp;a tu cuenta.</p>
     </div>
   );
 }
