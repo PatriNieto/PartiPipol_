@@ -141,6 +141,11 @@ const handleFileUpload = async (event) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    if (name === "precio" && Number(value) < 0) {
+      alert("El precio debe ser mayor de 0");
+      return; // Detenemos la actualización si el valor no es válido
+    }
+
     // Solo tenemos un caso especial en calle y ciudad que componen dirección
     if (name === "calle" || name === "ciudad") {
       setEvento((prevEvento) => ({
@@ -190,13 +195,21 @@ const handleFileUpload = async (event) => {
           value={evento.direccion.calle}
           onChange={handleChange}
         />
-        <label>Ciudad:</label>
-        <input
-          type="text"
+       <label>Ciudad:</label>
+        <select
           name="ciudad"
           value={evento.direccion.ciudad}
           onChange={handleChange}
-        />
+        >
+          <option value="">Seleccione una ciudad</option>
+          <option value="Madrid">Madrid</option>
+          <option value="Barcelona">Barcelona</option>
+          <option value="Bilbao">Bilbao</option>
+          <option value="Valencia">Valencia</option>
+          <option value="Málaga">Málaga</option>
+          <option value="otra">Otra</option>
+        </select>
+
 
         <br />
 

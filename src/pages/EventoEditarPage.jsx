@@ -132,7 +132,7 @@ const [isUploading, setIsUploading] = useState(false); // for a loading animatio
         // Resetear el estado para limpiar los inputs
         setEvento({ ...DEFAULT_EVENTO_FORM_VALUES });
         setSubmitting(false);
-        navigate("/eventos");
+        navigate(`/eventos/${eventoId}`);
       })
       .catch((error) => {
         console.log(error);
@@ -268,13 +268,21 @@ const [isUploading, setIsUploading] = useState(false); // for a loading animatio
           value={evento.direccion.calle}
           onChange={handleChange}
         />
-        <label>Ciudad:</label>
-        <input
-          type="text"
+         <label>Ciudad:</label>
+        <select
           name="ciudad"
           value={evento.direccion.ciudad}
           onChange={handleChange}
-        />
+        >
+          <option value="">Seleccione una ciudad</option>
+          <option value="Madrid">Madrid</option>
+          <option value="Barcelona">Barcelona</option>
+          <option value="Bilbao">Bilbao</option>
+          <option value="Valencia">Valencia</option>
+          <option value="Málaga">Málaga</option>
+          <option value="otra">Otra</option>
+        </select>
+
 
         <br />
 

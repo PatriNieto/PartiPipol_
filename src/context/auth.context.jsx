@@ -47,6 +47,7 @@ function AuthWrapper(props) {
       console.log(error)
       setIsLoggedIn(false)
       setLoggedUserId(null)
+      setLoggedUser(null)
       setIsValidatingToken(false)
     }
   }

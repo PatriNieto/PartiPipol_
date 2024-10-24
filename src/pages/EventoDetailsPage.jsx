@@ -26,9 +26,11 @@ function EventoDetailsPage() {
       .get(`${API_URL}/api/eventos/${eventoId}`)
       .then((response) => {
         const oneEvento = response.data;
-        setEvento(oneEvento);
+        setEvento(oneEvento)
+        setLoading(false)
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error))
+      
   }, [eventoId]);
 
   //funcion getComentarios del evento
@@ -85,6 +87,14 @@ const handleDeleteComentario = (comentarioId) =>{
     getComentarios()
     setLoading(false)
   }, [eventoId, getEvento, getComentarios]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  
+  if (!evento) {
+    return <div>No evento found</div>;
+  }
 
   return (
     <div>
@@ -143,12 +153,16 @@ const handleDeleteComentario = (comentarioId) =>{
           )}
 
           <br />
-          <Link
-          to={`/eventos/editar/${eventoId}`}>
-          <button>
-            Editar evento
-          </button>
-          </Link>
+          
+          {//rendimiento condicional
+          
+          evento.promoter === loggedUserId && ( // Verificamos si el loggedUserId es el promoter
+              <Link to={`/eventos/editar/${eventoId}`}>
+                <button>Editar evento</button>
+              </Link>
+            )}
+
+         
          
         </div>
 

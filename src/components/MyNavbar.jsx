@@ -118,6 +118,13 @@ function MyNavbar() {
         {isLoggedIn && 
           <Nav.Link
           as={Link}
+          to="/mis-eventos">
+          Mis eventos
+        </Nav.Link>
+        }
+           {isLoggedIn && 
+          <Nav.Link
+          as={Link}
           to="/evento-crear">
           Crear evento
         </Nav.Link>
