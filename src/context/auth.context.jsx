@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { createContext, useEffect, useState } from 'react'
-
+import Spinner from 'react-bootstrap/Spinner'; 
 //tendremos que crear dos componentes : contexto y envoltorio
 
 //contexto: 
@@ -59,7 +59,11 @@ function AuthWrapper(props) {
 
   if(isValidatingToken){  
     //podemos cambiar esto por un spinner
-    return <h3>...validando usuario</h3>    
+    return (  <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Validando usuario...</span>
+      </Spinner>
+    </div>)  
   }
   return (
     <AuthContext.Provider
