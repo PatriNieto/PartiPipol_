@@ -21,12 +21,13 @@ import ArtistsPage from "./pages/ArtistsPage";
 import ArtistDetailsPage from "./pages/ArtistDetailsPage";
 import ProfilePageEditar from "./pages/ProfilePageEditar";
 import EventosAsistirePage from "./pages/EventosAsistirePage";
+import Footer from "./components/Footer";
 
 
 function App() {
 
   return (
-    <div>
+    <div className="bg-dark">
       <MyNavbar />
 
       <br />
@@ -77,6 +78,8 @@ function App() {
         {/* error FE routes here... */}
         <Route path="*" element={<ErrorPage />} />
       </Routes>
+      <Footer/>
+    
     </div>
   )
 }

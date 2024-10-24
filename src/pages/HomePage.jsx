@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import SearchBar from '../components/SearchBar'
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "../styles/HomePage.css"
+
 
 
 
@@ -50,14 +52,19 @@ useEffect(() => {
 
   return (
     <>
-    <div className=' d-flex flex-column w-100'>
-    <h2>Busca un evento:</h2>
+
+    
+
+      <div className="container d-flex flex-column align-items-left justify-content-center min-vh-100 bg-dark text-light p-10">
+        <div className="sticky-top bg-dark p-3">
+    <h2>Encuentra un evento:</h2>
   <SearchBar 
       nombreQuery={nombreQuery}
       setNombreQuery={setNombreQuery}
       placeholder={"Escribe el nombre de un evento o de un artista"}
       />
-
+</div>
+<ul className="eventos-dropdown bg-dark">
 {eventos ?
         eventos.map(
           (evento, index) => (
@@ -65,13 +72,16 @@ useEffect(() => {
               <Link
               key={index}
               to={`/eventos/${evento._id}`}>
-            <div>
 
-              <h2>
-                {evento.nombre}
-              </h2>
-              <p>{evento.descripcion}</p>
 
+              <div >
+              <div >
+
+              <h5 className="card-title">{evento.nombre}</h5>
+              <p className="card-text">{evento.descripcion}</p>
+         
+
+              </div>
               </div>
 
               </Link>
@@ -79,14 +89,35 @@ useEffect(() => {
         ) : (
           <p>No hay eventos con ese nombre</p>
         )}
-
+        </ul>
+</div>
         <Link
-        to="/eventos">
-        <p>
-        Ver Todos los eventos
-        </p>
+        to="/eventos"
+        className='text-light p-5 min-vh-50'>
+          <div
+          className='container bg-dark py-10'>
+          <h4
+          className='link-hover-effect'>
+          Ver todos los eventos
+          </h4>
+          </div>
+        </Link>
+        <div
+          className='container bg-dark py-10'>
+            <h4>Eres promotor?
+              </h4>
+        <Link
+        to="/evento-crear"
+        className='text-light p-5 min-vh-50'>
+          
+          <h4
+           className='link-hover-effect'>
+          Crea tu evento
+          </h4>
+          
         </Link>
         </div>
+       
         
     </>
   )

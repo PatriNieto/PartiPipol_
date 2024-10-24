@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 function Signup() {
@@ -37,9 +37,13 @@ function Signup() {
   };
 
   return (
-    <div>
+    <div className="container min-vh-100 d-flex flex-column justify-content-center align-items-center">
 
-      <h1>Formulario de Registro</h1>
+
+      <h3
+      className="pb-3">
+      Regístrate
+      </h3>
     
       <form onSubmit={handleSignup}>
 
@@ -51,6 +55,8 @@ function Signup() {
           onChange={handleEmailChange}
         />
 
+        <br
+        />
         <br />
 
         <label>Username:</label>
@@ -62,6 +68,7 @@ function Signup() {
         />
 
         <br />
+        <br />
 
         <label>Contraseña:</label>
         <input
@@ -72,13 +79,28 @@ function Signup() {
         />
 
         <br />
+        <br />
 
-        <button type="submit">Registrar</button>
+        <br />
+        <div
+        className="d-flex justify-content-center">
+        <button  type="submit">Registrarse</button>
+
+        </div>
 
         {errorMessage && <p>{errorMessage}</p>}
 
       </form>
-      
+      <hr />
+      <p
+      className="w-75">Si ya tienes una cuenta &nbsp;
+     <Link
+     to="/login">
+     <strong>  
+      recuerdanos
+      </strong>
+     </Link>
+     &nbsp;tus datos de usuario.</p>
     </div>
   );
 }

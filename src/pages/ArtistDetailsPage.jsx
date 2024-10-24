@@ -63,18 +63,22 @@ useEffect(() => {
   return (
     
 <>
+<div
+className='container min-vh-100 d-flex flex-column justify-content-between p-3'>
 
-    <div>{artist.name}</div>
+    <div
+    className='fs-3'>{artist.name}</div>
    {/*  //la api no tiene buenos enlaces para esto
     <img src={artist.image[1][`#text`]} alt="artist-pic-1" /> */}
     <div>Oyentes totales: {artist.stats.listeners}</div>
 
+<hr />
 {/*     
 este dato contienen un enlace que se queda en texto, he mirado opciones pero todas son peligrosas 
 por las inyecciones de html asique busco < y corto
  */}    
  <div>{artist.bio.summary.slice(0,(artist.bio.summary.indexOf('<')))}</div>
-   
+   <hr />
    {
     artist.ontour === "1" ?
     <p>Actualmente de gira</p>
@@ -123,6 +127,7 @@ por las inyecciones de html asique busco < y corto
   <p>Este artista es tan especial que no tiene artistas similares</p>
 )
 }
+</div>
    
 </>
     

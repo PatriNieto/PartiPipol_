@@ -12,7 +12,7 @@ function SearchBar({
       <input 
       className='w-100'
       type="text"
-      name="nombre"
+      name="nombre" 
       value={nombreQuery}
       placeholder={placeholder}
       onChange={(e) =>setNombreQuery(e.target.value)} />

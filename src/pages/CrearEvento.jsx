@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Toast, ToastContainer } from "react-bootstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "../styles/CrearEvento.css"
+
+
 
 // Conexión a la base de datos
 const API_URL = import.meta.env.VITE_SERVER_URL;
@@ -33,6 +38,7 @@ function CrearEvento({ artistaNombre}) {
   const [artistResults, setArtistResults] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [message, setMessage] = useState("");
 
 
 
@@ -80,10 +86,14 @@ const handleFechaChange = (event) => {
   }));
 };
 
+
+//toast de bootstrap react
+const [showToast, setShowToast] = useState(false);
+
   // Ejecución al enviar formulario de creación de evento
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+    if (!validateForm()) return;  
     setSubmitting(true);
 
     const token = localStorage.getItem("authToken");
@@ -104,14 +114,19 @@ const handleFechaChange = (event) => {
         },
       })
       .then(() => {
-        // Resetear el estado para limpiar los inputs
+        let message = ("Evento creado.")
+        setShowToast(true);
+        console.log("des", showToast)
+        console.log("des2", message)
         setEvento({ ...DEFAULT_EVENTO_FORM_VALUES, artista: artistaNombre });
         setSubmitting(false);
         navigate("/eventos");
       })
       .catch((error) => {
         console.log(error);
-         
+        const message = error.response?.data?.message || "Error al crear el evento.";
+        setErrorMessage(message);
+        setShowToast(true);
         setSubmitting(false);
       });
   };
@@ -170,12 +185,34 @@ const handleFechaChange = (event) => {
     }
   };
 
+  //validacion front en el envio de formulario:
+  const validateForm = () => {
+    const { nombre, fecha, direccion, descripcion, precio } = evento;
+    if (!nombre || !fecha || !direccion.calle || !direccion.ciudad || !descripcion || precio <= 0) {
+      setErrorMessage("Los campos marcados con (*) son obligatorios y el precio debe ser mayor que 0.");
+      setMessage("Los campos marcados con (*) son obligatorios y el precio debe ser mayor que 0.");
+
+      setShowToast(true)
+      return false;
+    }
+    return true;
+  };
+
+
+
+
   return (
-    <div>
-      <h1>Crear un Evento</h1>
+
+  <div className="row justify-content-center d-flex align-items-center m-0 min-vh-100">
+    <div 
+    id="container-crear-evento"
+    className="text-light col-12 col-md-8 col-lg-10 m-0 overflow-hidden">
+      <h3>
+      Crea tu Evento
+      </h3>
 
       <form onSubmit={handleSubmit}>
-        <label>Nombre del Evento:</label>
+        <label>Nombre del Evento(*):</label>
         <input
           type="text"
           name="nombre"
@@ -185,29 +222,30 @@ const handleFechaChange = (event) => {
 
         <br />
 
-        <label>Fecha del evento:</label>
+        <label>Fecha del evento(*):</label>
         <input 
           type="date" 
         // Convertir a string ISO para el campo de fecha - solucion consultada para el manejo de fechas
           onChange={handleFechaChange} 
         />
 
-        <br />
-        <h4>Dirección del evento:</h4>
-        <label>Calle:</label>
+        <br />  
+        <h6
+        className="mt-3">Dirección del evento:</h6>
+        <label>Calle(*):</label>
         <input
           type="text"
           name="calle"
           value={evento.direccion.calle}
           onChange={handleChange}
         />
-       <label>Ciudad:</label>
+       <label>Ciudad(*):</label>
         <select
           name="ciudad"
           value={evento.direccion.ciudad}
           onChange={handleChange}
         >
-          <option value="">Seleccione una ciudad</option>
+          <option value="">Selecciona una ciudad</option>
           <option value="Madrid">Madrid</option>
           <option value="Barcelona">Barcelona</option>
           <option value="Bilbao">Bilbao</option>
@@ -219,7 +257,8 @@ const handleFechaChange = (event) => {
 
         <br />
 
-                <div>
+                <div
+                className="mt-3">
                   <p>Artista invitado:</p>
           <input 
             type="text" 
@@ -245,16 +284,23 @@ const handleFechaChange = (event) => {
         <br />
 
         <label>Género:</label>
-        <input
-          type="text"
+        <select
           name="genero"
           value={evento.genero}
           onChange={handleChange}
-        />
+        >
+          <option value="">Selecciona un género</option>
+          <option value="Electronica">Electrónica</option>
+          <option value="Jazz">Jazz</option>
+          <option value="Rock">Rock</option>
+          <option value="Pop">Pop</option>
+          <option value="Latina">Latina</option>
+        </select>
 
         <br />
-        <label>Descripción:</label>
+        <label>Descripción(*):</label>
         <input
+        className=""
           type="text"
           name="descripcion"
           value={evento.descripcion}
@@ -262,16 +308,18 @@ const handleFechaChange = (event) => {
         />
 
 
-<div>
-  <label>Sube un flyer o una imagen representativa del evento: </label>
+
+  <label>Subir imágen: </label>
   <input
+  id="cloud"
+  className="mb-3 overflow-hidden"
     type="file"
     name="image"
     onChange={handleFileUpload}
     disabled={isUploading}
   />
   {/* below disabled prevents the user from attempting another upload while one is already happening */}
-</div>;
+
 
 {/* to render a loading message or spinner while uploading the picture */}
 {isUploading ? <h3>... uploading image</h3> : null}
@@ -280,8 +328,9 @@ const handleFechaChange = (event) => {
 {imageUrl ? (<div><img src={imageUrl} alt="img" width={200} /></div>) : null}
 
         <br />
-        <label>Precio:</label>
+        <label>Precio(*):</label>
         <input
+        className="mb-5"
           type="number"
           name="precio"
           value={evento.precio}
@@ -289,12 +338,44 @@ const handleFechaChange = (event) => {
         />
 
         <br />
+<div
+className="d-flex justify-content-center">
+<button 
+        className="m-3"
+        type="submit">Crear Evento</button>
 
-        <button type="submit">Crear Evento</button>
+</div>
+<Link
+to={"/"}>
+<div
+className="d-flex justify-content-center">
+<button 
+        className="m-3"
+        >Cancelar</button>
 
-        {errorMessage && <p>{errorMessage}</p>}
+</div>
+</Link>
+
+       
+
+     
+
+       {/*  {errorMessage && <p>{errorMessage}</p>}  */}
       </form>
+            <Toast
+            position="bottom-end"
+            className="bg-dark text-light"
+              show={showToast}
+              onClose={() => setShowToast(false)}
+              delay={3000}
+              autohide
+            >
+              <Toast.Body>{message}</Toast.Body>
+            </Toast>
     </div>
+    </div>
+
+
   );
 }
 

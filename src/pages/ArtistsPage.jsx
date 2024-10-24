@@ -53,7 +53,7 @@ function ArtistsPage() {
   }, [nombreQuery])
 
   return (
-    <div className="">
+    <div className="container text-light">
       <h2>Buscar artista:</h2>
 
 <SearchBar
@@ -63,9 +63,11 @@ placeholder={"Introduce el nombre de un artista..."}
 />
 {filteredArtists.length > 0 && (
       <div>
-        <h3>Resultados:</h3>
+        Resultados:
         {filteredArtists.slice(0,5).map((artist, index) => (
-          <Link key={index} to={`/artists/${artist.name}`}>
+          <Link key={index} 
+          className="text-light"
+          to={`/artists/${artist.name}`}>
             <div>
               <h4>{artist.name}</h4>
             </div>
@@ -73,7 +75,7 @@ placeholder={"Introduce el nombre de un artista..."}
         ))}
       </div>
     )}
-
+<hr />
       <p>Artistas más populares:</p>
       {artists &&
         artists.map(

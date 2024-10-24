@@ -27,20 +27,21 @@ function ProfilePage() {
   if (!userData) return <div>Cargando...</div>;
 
   return (
-    <div>
-      
-      <h3>PROFILE PAGE</h3>
-      <p>Solo usuarios resgistrados</p>
-
+    <div
+    className='container min-vh-100 d-flex flex-column justify-content-between p-5'>
+    
       <h1>{userData.username}</h1>
       <p>Email: {userData.email}</p>
-      <img src={userData.imagenDePerfil} alt="imagen-perfil" />
+      <img
+      className="mw-100 w-75"
+      src={userData.imagenDePerfil} alt="imagen-perfil" />
       
 
 {/*       solo podremos cambiar la imagen de perfil y la contraseña
  */}      <Link
           to={`/profile-page/editar`}>
-          <button>
+          <button
+          className='mt-3'>
             Editar Perfil
           </button>
           </Link>

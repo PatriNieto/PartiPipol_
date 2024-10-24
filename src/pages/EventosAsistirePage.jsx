@@ -2,10 +2,13 @@ import React, { useContext } from 'react'
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/auth.context";
+import { format } from 'date-fns'; 
+import { Link } from 'react-router-dom';
+
 
 function EventosAsistirePage() {
   const [todosEventos, setodosEventos] = useState([])
-  const { loggedUserId } = useContext(AuthContext); 
+  const { loggedUserId,loggedUser } = useContext(AuthContext); 
 
   const API_URL = import.meta.env.VITE_SERVER_URL;
 
@@ -37,35 +40,65 @@ function EventosAsistirePage() {
   const misEventos = todosEventos.filter(
     (evento) => evento.promoter === loggedUserId
   );
+
+
   return (
     <>
+
+    
 {    //una parte con los eventos a los que asistire
 }
-<div>
+<div 
+className='container mt-3 min-vh-100'>
+  <h6
+  className='fs-2 mt-3'> Hola, {loggedUser}</h6>
+    <hr />
       <div>
-        <h3>Eventos a los que asistirás:</h3>
+        <p>
+        Eventos a los que asistirás:
+        </p>
+
         {asistireEventos.length > 0 ? (
-          asistireEventos.map((evento) => (
+          asistireEventos.map((evento, index) => (
+            <Link
+            className=""
+            key={index}
+            to={`/eventos/${evento._id}`}>
             <div key={evento._id}>
+        
               <h4>{evento.nombre}</h4>
-              <p>{evento.fecha}</p>
+              <p>{evento.fecha ? format(new Date(evento.fecha), 'dd/MM/yyyy'): 'Fecha no disponible'}</p>
               <p>{evento.direccion.ciudad}</p>
             </div>
+            </Link>
           ))
         ) : (
           <p>No tienes ningún evento planeado.</p>
         )}
       </div>
+   <hr />
 {/* //otra parte con los eventos creados por mi
  */}      <div>
-        <h3>Eventos creados por ti:</h3>
+          <p>
+          Eventos creados por ti:
+          </p>
+
         {misEventos.length > 0 ? (
-          misEventos.map((evento) => (
-            <div key={evento._id}>
+          misEventos.map((evento, index) => (
+            <Link
+            className=""
+            key={index}
+            to={`/eventos/${evento._id}`}>
+            <div 
+            key={evento._id}>
               <h4>{evento.nombre}</h4>
-              <p>{evento.fecha}</p>
+
+              <p>{evento.fecha ? format(new Date(evento.fecha), 'dd/MM/yyyy'): 'Fecha no disponible'}</p>
+
               <p>{evento.direccion.ciudad}</p>
             </div>
+            </Link>
+
           ))
         ) : (
           <p>No has creado ningún evento.</p>

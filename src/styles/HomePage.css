@@ -1,0 +1,42 @@
+.eventos-popup {
+  margin-top: 10px; /* Ajusta el espacio entre la barra y los resultados */
+  max-height: 400px; /* Limita la altura para que puedas hacer scroll si hay muchos resultados */
+  overflow-y: auto; /* Permite desplazamiento si se excede la altura */
+  z-index: 1000; /* Asegura que esté por encima de otros elementos */
+}
+
+.eventos-dropdown {
+  background-color: #343a40; /* Ajusta el color de fondo */
+  border: 1px solid #495057; /* Añade borde */
+  border-radius: 4px;
+  width: 100%; /* Ajusta el ancho para que se alinee con la barra de búsqueda */
+  max-height: 200px; /* Limita la altura para hacer scroll si hay muchos resultados */
+  overflow-y: auto; /* Permite desplazamiento */
+  list-style-type: none;
+  padding: 0;
+  margin: 10px 0; /* Ajusta el margen */
+  z-index: 900; /* Asegura que esté debajo de la barra de búsqueda */
+}
+
+card-body {
+  padding: 10px; /* Ajusta el espacio interno */
+}
+
+.card-title, .card-text {
+  margin: 0; /* Elimina el margen para un diseño más compacto */
+}
+
+a.event-link {
+  text-decoration: none; /* Elimina el subrayado */
+  color: inherit; /* Mantén el color del texto */
+}
+
+.bg-dark {
+  background-color: #343a40 !important; /* Asegura el color de fondo */
+}
+.link-hover-effect {
+  text-decoration: none; /* Quitar el subrayado */
+  color: inherit; /* Mantener el color actual */
+  transition: border 0.3s ease; /* Suavizar la transición */
+}
+

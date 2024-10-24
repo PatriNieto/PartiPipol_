@@ -5,6 +5,7 @@ import { AuthContext } from "../context/auth.context";
 import BotonAsistencia from "../components/BotonAsistencia";
 //funcion libreria fechas
 import { format } from 'date-fns'; 
+import "../styles/EventoDetails.css"
 
 
 // Import the string from the .env with URL of the API/server - http://localhost:5005
@@ -104,16 +105,22 @@ const handleDeleteComentario = (comentarioId) =>{
 
 
   return (
-    <div>
+    <div className="container">
    
         {/* Evento details */}
         <div>
           {evento && (
             <>
-              <h1 className="text-2xl font-semibold mb-4">
-                {evento.nombre}
-              </h1>
-              <img src={evento.image} alt="imagen-evento" />
+    
+
+
+    <div
+    className='fs-3'>{evento.nombre}</div>
+
+
+              <img src={evento.image} 
+              className="mw-100"
+              alt="imagen-evento" />
               {/* <p>{evento.fecha}</p> */}
               <p className="mb-2 border-b pb-2">
                 <strong>Fecha del evento:</strong> {formattedDate}
@@ -177,7 +184,7 @@ const handleDeleteComentario = (comentarioId) =>{
          
         </div>
 
-     
+     <hr />
 
         {loading && <div>Loading...</div>}
 
@@ -204,22 +211,32 @@ const handleDeleteComentario = (comentarioId) =>{
     {
       comentarios.map((comentario)=>(
         <div 
-        key={comentario._id}>
-          <p>escrito por {comentario.usuario.username}</p>
+        key={comentario._id}
+        className="border mt-3 p-3">
+          <p
+          className="m-0 mt-3"
+          > {comentario.comentario}</p>
+
+          <p
+          className="d-inline">escrito por {comentario.usuario.username}</p>
           <img 
           src={comentario.usuario.imagenDePerfil} 
           alt="user-pic"
+          className="m-3"
           style={{ width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover",
             objectPosition: "center" }} />
-          <p> {comentario.comentario}</p>
           {/* opcion borrar comentario para el usuario , render condicionado a que el usuario coincida*/
            
            comentario.usuario._id == loggedUserId && (
+
             <button
             type="button"
+            id="boton-eliminar-comentario"
+            className="d-block m-0"
             onClick={()=>handleDeleteComentario(comentario._id)}>
-              eliminar
+              eliminar comentario
             </button>
+
           ) 
           }
         </div>

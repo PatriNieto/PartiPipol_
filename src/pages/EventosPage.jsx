@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import FilterEventoBar from "../components/FilterEventoBar";
-//import CohortFilterBar from "../components/CohortFilterBar";
-//import CohortCard from "../components/CohortCard";
+//import Card from "react-bootstrap/esm/Card";
 
-// Import the string from the .env with URL of the API/server - http://localhost:5005
+
+
 const API_URL = import.meta.env.VITE_SERVER_URL;
 
 function EventosPage() {
@@ -48,6 +48,10 @@ useEffect(() => {
 
   return (
     <>
+   <div className="row justify-content-center d-flex m-0 min-vh-100">
+    <div 
+    //id="container-crear-evento"
+    className="text-light col-12 col-md-8 col-lg-10 m-0 overflow-hidden">
 
     <FilterEventoBar
     ciudadQuery={ciudadQuery}
@@ -57,12 +61,13 @@ useEffect(() => {
     handleChange={handleChange}
     />
 
-
+    
       {eventos ?
         eventos.map(
           (evento, index) => (
         
               <Link
+              className=""
               key={index}
               to={`/eventos/${evento._id}`}>
             <div>
@@ -73,12 +78,14 @@ useEffect(() => {
               <p>{evento.descripcion}</p>
 
               </div>
+              <hr />
 
               </Link>
           )
         ) : (
           <p>No hay eventos creados</p>
-        )}
+        )}</div>
+        </div>
     </>
   );
 }

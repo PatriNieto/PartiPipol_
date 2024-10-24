@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth.context";
 
 function Login() {
@@ -46,9 +46,14 @@ function Login() {
   };
 
   return (
-    <div>
+    <div className="container min-vh-100 d-flex flex-column justify-content-center align-items-center">
 
-      <h1>Formulario de Acceso</h1>
+
+    <h3
+    className="pb-3">
+    Formulario de Acceso
+    </h3>
+
 
       <form onSubmit={handleLogin}>
         <label>Nombre de usuario:</label>
@@ -60,6 +65,7 @@ function Login() {
         />
 
         <br />
+        <br />
 
         <label>Contraseña:</label>
         <input
@@ -70,13 +76,27 @@ function Login() {
         />
 
         <br />
+        <br />
+        <br />
 
+        <div
+        className="d-flex justify-content-center">
         <button type="submit">Acceder</button>
-
+        </div>
         {errorMessage && <p>{errorMessage}</p>}
 
 
       </form>
+      <hr />
+      <p
+      className="w-75">Si no tienes una cuenta &nbsp;
+     <Link
+     to="/signup">
+     <strong>  
+      regístrate
+      </strong>
+     </Link>
+     &nbsp;para estar al día de los eventos de tu ciudad.</p>
       
     </div>
   );

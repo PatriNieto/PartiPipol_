@@ -104,6 +104,9 @@ const handleBorrarUser = async ()=>{
 
   return (
   <>
+  <div
+  className="container">
+
   <form onSubmit={handleSubmit}>
       <label htmlFor="username">Nombre de Usuario</label>
       <input 
@@ -154,6 +157,7 @@ const handleBorrarUser = async ()=>{
           </button> 
 
   </form>
+  </div>
 
   </>
   );

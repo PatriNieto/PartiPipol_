@@ -1,0 +1,23 @@
+label{
+  display: block;
+}
+
+#cloud{
+  font-size: xx-small;
+}
+#container-crear-evento{
+
+}
+
+@media(width> 1054px){
+  label{
+    display: inline;
+  }
+  #cloud{
+    font-size:medium;
+  }
+  
+#container-crear-evento{
+  font-size:1.5em
+}
+}
