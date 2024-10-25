@@ -19,7 +19,7 @@ function ArtistsPage() {
   const apiKey = import.meta.env.VITE_LASTFM_API_KEY;
   console.log(apiKey)
   const getPopularArtists = () => {
-    axios.get(`https://ws.audioscrobbler.com/2.0/?method=chart.getTopArtists&api_key=${apiKey}&format=json`)
+    axios.get(`https://ws.audioscrobbler.com/2.0/?method=chart.getTopArtists&artist=${nombreQuery}&api_key=ca7b9b089da8af348829efb05cb36c40&format=json`)
     .then((response) => {
         setArtists(response.data.artists.artist);
         console.log(response.data.artists.artist)
@@ -64,7 +64,8 @@ setNombreQuery={setNombreQuery}
 placeholder={"Introduce el nombre de un artista..."}
 />
 {filteredArtists.length > 0 && (
-      <div>
+      <div
+      className="min-vh-100 ">
         Resultados:
         {filteredArtists.slice(0,5).map((artist, index) => (
           <Link key={index} 
