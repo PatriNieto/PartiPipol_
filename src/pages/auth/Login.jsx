@@ -46,7 +46,7 @@ function Login() {
         navigate("/error")
       }
     }finally {
-      setLoading(false); // Detener el loading aquí
+      setLoading(false); 
     }
   };
 
@@ -86,8 +86,8 @@ function Login() {
 
         <div
         className="d-flex justify-content-center">
-        <button type="submit" disabled={loading}> {/* Deshabilitar el botón si está cargando */}
-            {loading ? <Spinner animation="border" size="sm" /> : 'Acceder'} {/* Mostrar el spinner o el texto */}
+        <button type="submit" disabled={loading}> 
+            {loading ? <Spinner animation="border" size="sm" /> : 'Acceder'} 
           </button>
         </div>
      
