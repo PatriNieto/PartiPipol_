@@ -88,6 +88,11 @@ function Login() {
         className="d-flex justify-content-center">
         <button type="submit">Acceder</button>
         </div>
+        {loading && (
+          <div className="mt-3">
+            <Spinner animation="border" />
+          </div>
+        )}
         {errorMessage && <p>{errorMessage}</p>}
 
 
