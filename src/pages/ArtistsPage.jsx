@@ -17,12 +17,13 @@ function ArtistsPage() {
 
   //pasamos la api key la backend - Git Guardian
   const apiKey = import.meta.env.VITE_LASTFM_API_KEY;
-
+  console.log(apiKey)
   const getPopularArtists = () => {
     axios.get(`https://ws.audioscrobbler.com/2.0/?method=chart.getTopArtists&api_key=${apiKey}&format=json`)
     .then((response) => {
         setArtists(response.data.artists.artist);
         console.log(response.data.artists.artist)
+        console.log("API Key:", apiKey);
       })
       .catch((error) => console.log(error));
   };
@@ -34,7 +35,8 @@ function ArtistsPage() {
   //creamos otro useEffect para cuando se cambie la busqueda
   useEffect(()=>{
     if(nombreQuery.trim()){
-      axios.get(`https://ws.audioscrobbler.com/2.0/?method=artist.search&artist=${nombreQuery}&api_key=${apiKey}&format=json`)
+      // const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/artists/search?artist=${artistName}`);
+      axios.get(`https://ws.audioscrobbler.com/2.0/?method=artist.search&artist=${nombreQuery}&api_key=ca7b9b089da8af348829efb05cb36c40&format=json`)
       .then((response)=>{
         //esto nos viene de la API
         const artists = response.data.results.artistmatches.artist
