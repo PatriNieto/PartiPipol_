@@ -2,6 +2,7 @@ import axios from "axios";
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth.context";
+import { Spinner } from "react-bootstrap"; 
 
 function Login() {
 
@@ -12,14 +13,14 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
+  const [loading, setLoading] = useState(false); 
 
   const handleUsernameChange = (e) => setUsername(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const userCredentials  = {
         username, password
@@ -33,7 +34,9 @@ function Login() {
       
       await authenticateUser()
 
+
       navigate("/profile-page")
+
     } catch (error) {
       console.log(error)
       //sacamos el mensaje por el cual no se crea el usuario 
@@ -42,6 +45,8 @@ function Login() {
       } else {
         navigate("/error")
       }
+    }finally {
+      setLoading(false); // Detener el loading aquí
     }
   };
 
