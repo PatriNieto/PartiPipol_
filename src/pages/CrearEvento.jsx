@@ -339,7 +339,7 @@ const [showToast, setShowToast] = useState(false);
         <br />
         <Toast
             position="middle-center"
-            className="bg-light text-dark w-100"
+            className="bg-light text-dark w-75"
               show={showToast}
               onClose={() => setShowToast(false)}
               delay={3000}

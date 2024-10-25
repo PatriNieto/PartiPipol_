@@ -4,13 +4,14 @@ import SearchBar from '../components/SearchBar'
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "../styles/HomePage.css"
-
-
+import Carousel from 'react-bootstrap/Carousel';
+import ExampleCarouselImage from '../assets/imgs/defaulteventoPic.jpg';
 
 
 function HomePage() {
   const [eventos , setEventos] = useState([]);
   const [nombreQuery, setNombreQuery] = useState("");
+  const [eventosCarrousel, setEventosCarrousel] = useState([])
 
   const API_URL = import.meta.env.VITE_SERVER_URL;
 
@@ -37,7 +38,7 @@ useEffect(() => {
   let queryString = "";
   if (nombreQuery) queryString += `nombre=${nombreQuery}`;
 
-  // Realiza la solicitud con la cadena de consulta construida
+  
   axios
     .get(`${API_URL}/api/eventos?${queryString}`)
     .then((response) => {
@@ -48,11 +49,46 @@ useEffect(() => {
       setEventos([])
     }
 }, [nombreQuery]);
-
+useEffect(() => {
+ 
+  
+  axios
+    .get(`${API_URL}/api/eventos`)
+    .then((response) => {
+      setEventosCarrousel(response.data);
+      console.log(response.data)
+    })
+    .catch((error) => console.log(error));
+    
+}, []);
 
   return (
     <>
-
+<Carousel className="full-width-carousel">
+{eventosCarrousel.length > 0 ? (
+            eventosCarrousel.splice(0,5).map((elem, index) => (
+              <Carousel.Item key={index}>
+                <img
+                  className="d-block w-100"
+                  src={elem.imagen || ExampleCarouselImage} 
+                  alt="evento-img"
+                />
+                <Carousel.Caption>
+                  
+                  <h2
+                  className='text-xxlarge fs-1'>{elem.nombre}</h2>
+                  <Link to={`/eventos/${elem._id}`} className="">
+                    Ver más
+                  </Link>
+                </Carousel.Caption>
+              </Carousel.Item>
+            ))
+          ) : (
+            <Carousel.Item>
+              <h3>No hay eventos disponibles</h3>
+            </Carousel.Item>
+          )}
+      </Carousel>
     
 
       <div className="container d-flex flex-column align-items-left justify-content-center min-vh-100 bg-dark text-light p-10">
