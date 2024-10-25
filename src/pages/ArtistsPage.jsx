@@ -16,8 +16,9 @@ function ArtistsPage() {
   const [filteredArtists, setFilteredArtists ] = useState([])
 
   //pasamos la api key la backend - Git Guardian
+  //!me fallaba la llamada escondiendo la key, revisar esto
   const apiKey = import.meta.env.VITE_LASTFM_API_KEY;
-  console.log(apiKey)
+  
   const getPopularArtists = () => {
     axios.get(`https://ws.audioscrobbler.com/2.0/?method=chart.getTopArtists&artist=${nombreQuery}&api_key=ca7b9b089da8af348829efb05cb36c40&format=json`)
     .then((response) => {
@@ -56,6 +57,8 @@ function ArtistsPage() {
 
   return (
     <div className="container text-light">
+        <div className="sticky-top bg-dark p-3">
+
       <h2>Buscar artista:</h2>
 
 <SearchBar
@@ -63,9 +66,10 @@ nombreQuery= {nombreQuery}
 setNombreQuery={setNombreQuery}
 placeholder={"Introduce el nombre de un artista..."}
 />
+</div>
 {filteredArtists.length > 0 && (
       <div
-      className="min-vh-100 ">
+      className="min-vh-100">
         Resultados:
         {filteredArtists.slice(0,5).map((artist, index) => (
           <Link key={index} 

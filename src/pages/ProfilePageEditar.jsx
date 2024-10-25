@@ -15,6 +15,8 @@ function ProfilePageEditar() {
   });
   const [imagenDePerfil, setImagenDePerfil] = useState(null)
   const [username, setSsername] = useState(null)
+  const [errorMessage, setErrorMessage] = useState("");
+
 
   const navigate = useNavigate()
 
@@ -35,10 +37,26 @@ const handleChange = (e) => {
   const { name, value } = e.target;
   setUserData({ ...userData, [name]: value });
 };
+
+//comprobacion el nombnre de usuario existe?
+const checkUsernameExists = async (username) => {
+  try {
+    const response = await axios.get(`${API_URL}/api/user/check-username/${username}`);
+    return response.data.exists;
+  } catch (error) {
+    setErrorMessage("El nombre de usuario ya está en uso. Por favor, elige otro.");
+    return false;
+  }
+};
 //la función de envio del formulario
 const handleSubmit = async (e) => {
   e.preventDefault();
   try {
+    const usernameExists = await checkUsernameExists(userData.username);
+      if (usernameExists) {
+        setErrorMessage("El nombre de usuario ya está en uso. Por favor, elige otro.");
+        return;
+      }
     await axios.put(`${API_URL}/api/user/${loggedUserId}`, userData);
     navigate(`/profile-page`);
   } catch (error) {
@@ -83,6 +101,8 @@ const handleFileUpload = async (event) => {
 };
 
 const handleBorrarUser = async ()=>{
+  const confirmation = window.confirm("¿Quieres eliminar tu cuenta? Esta acción es irreversible.");
+    if (!confirmation) return;
 //guardamos el Token 
   const storedToken = localStorage.getItem("authToken");
   try {
@@ -104,8 +124,9 @@ const handleBorrarUser = async ()=>{
 
   return (
   <>
-  <div
-  className="container">
+   <div className="row justify-content-center d-flex align-items-center m-0 min-vh-100">
+    <div 
+    className="text-light col-12 col-md-8 col-lg-10 m-0 overflow-hidden ">
 
   <form onSubmit={handleSubmit}>
       <label htmlFor="username">Nombre de Usuario</label>
@@ -115,7 +136,8 @@ const handleBorrarUser = async ()=>{
       value={userData.username}
       onChange={handleChange}
       />
-
+<br />
+<br />
 
     {/*       <label htmlFor="imagenDePerfil">Imagen de perfil:</label>
       <input 
@@ -129,34 +151,42 @@ const handleBorrarUser = async ()=>{
     <div>
       <label>Image: </label>
       <input
+      className="cloud"
         type="file"
         name="imagenDePerfil"
         onChange={handleFileUpload}
         disabled={isUploading}
       />
             {/* below disabled prevents the user from attempting another upload while one is already happening */}
-  </div>;
+  </div>
 
       {/* to render a loading message or spinner while uploading the picture */}
       {isUploading ? <h3>... uploading image</h3> : null}
 
       {/* below line will render a preview of the image from cloudinary */}
       {imageUrl ? (<div><img src={imageUrl} alt="img" width={200} /></div>) : null}
-
+      <br />
         Este dato no se puede cambiar:
           <p>Email: {userData.email}</p>
-
+          <div
+          className="p-3 d-flex justify-content-center">
           <button
           type="submit">
             Guardar cambios
           </button>
-
-          <button
-          onClick={handleBorrarUser}>
+          </div>
+         
+<div>
+<button
+          onClick={handleBorrarUser}
+          className="bg-danger mt-5">
             Eliminar cuenta
           </button> 
-
+</div>
+    
+          {errorMessage && <p>{errorMessage}</p>}
   </form>
+  </div>
   </div>
 
   </>

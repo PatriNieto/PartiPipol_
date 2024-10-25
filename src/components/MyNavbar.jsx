@@ -93,11 +93,13 @@ function MyNavbar() {
         placement={"end"} 
         className="bg-dark text-light"
         scroll="true"
+        className="p-5 bg-dark text-light"
       >
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>{loggedUser}</Offcanvas.Title>
         </Offcanvas.Header>
-        <Offcanvas.Body>
+        <Offcanvas.Body
+        className="d-flex flex-column fs-5">
           {!isLoggedIn &&  
             <Nav.Link
               as={Link}
@@ -107,6 +109,7 @@ function MyNavbar() {
               Registro
             </Nav.Link>
           }
+          <br />
           {!isLoggedIn &&  
             <Nav.Link
               as={Link}
@@ -125,6 +128,8 @@ function MyNavbar() {
               Perfil
             </Nav.Link>
           }
+          <br />
+
           {isLoggedIn && 
             <Nav.Link
               as={Link}
@@ -134,6 +139,7 @@ function MyNavbar() {
               Mis eventos
             </Nav.Link>
           }
+          <br />
           {isLoggedIn && 
             <Nav.Link
               as={Link}
@@ -143,6 +149,8 @@ function MyNavbar() {
               Crear evento
             </Nav.Link>
           }
+          <br />
+
           {isLoggedIn &&  
             <Nav.Link
               onClick={handleLogOut}

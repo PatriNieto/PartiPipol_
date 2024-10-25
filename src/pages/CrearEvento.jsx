@@ -116,8 +116,7 @@ const [showToast, setShowToast] = useState(false);
       .then(() => {
         let message = ("Evento creado.")
         setShowToast(true);
-        console.log("des", showToast)
-        console.log("des2", message)
+      
         setEvento({ ...DEFAULT_EVENTO_FORM_VALUES, artista: artistaNombre });
         setSubmitting(false);
         navigate("/eventos");
@@ -311,8 +310,8 @@ const [showToast, setShowToast] = useState(false);
 
   <label>Subir imágen: </label>
   <input
-  id="cloud"
-  className="mb-3 overflow-hidden"
+
+  className="mb-3 overflow-hidden cloud"
     type="file"
     name="image"
     onChange={handleFileUpload}
@@ -338,8 +337,19 @@ const [showToast, setShowToast] = useState(false);
         />
 
         <br />
+        <Toast
+            position="middle-center"
+            className="bg-light text-dark w-100"
+              show={showToast}
+              onClose={() => setShowToast(false)}
+              delay={3000}
+              autohide
+            >
+              <Toast.Body>{message}</Toast.Body>
+            </Toast>
 <div
 className="d-flex justify-content-center">
+  
 <button 
         className="m-3"
         type="submit">Crear Evento</button>
@@ -362,16 +372,7 @@ className="d-flex justify-content-center">
 
        {/*  {errorMessage && <p>{errorMessage}</p>}  */}
       </form>
-            <Toast
-            position="bottom-end"
-            className="bg-dark text-light"
-              show={showToast}
-              onClose={() => setShowToast(false)}
-              delay={3000}
-              autohide
-            >
-              <Toast.Body>{message}</Toast.Body>
-            </Toast>
+           
     </div>
     </div>
 

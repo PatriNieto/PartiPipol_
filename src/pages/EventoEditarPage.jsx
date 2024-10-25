@@ -140,9 +140,19 @@ const [isUploading, setIsUploading] = useState(false); // for a loading animatio
       });
   };
    const handleBorrarEvento = () => {
+    const token = localStorage.getItem("authToken");
+    const confirmation = window.confirm("¿Quieres eliminar este evento? Esta acción es irreversible.");
+    if (!confirmation) return;
     axios
-      .delete(`${API_URL}/api/eventos/${evento._id}`)
-      .then(() => navigate(`/eventos`))
+      .delete(`${API_URL}/api/eventos/${evento._id}`,  {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }})
+      .then(() => {
+        navigate("/eventos")
+        alert("Evento eliminado.")
+        
+      })
       .catch((error) => console.log(error));
   }; 
  

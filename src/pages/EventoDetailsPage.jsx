@@ -117,10 +117,10 @@ const handleDeleteComentario = (comentarioId) =>{
     <div
     className='fs-3'>{evento.nombre}</div>
 
-
-              <img src={evento.image} 
+{evento.image && <img src={evento.image} 
               className="mw-100"
-              alt="imagen-evento" />
+              alt="imagen-evento" />}
+              
               {/* <p>{evento.fecha}</p> */}
               <p className="mb-2 border-b pb-2">
                 <strong>Fecha del evento:</strong> {formattedDate}
