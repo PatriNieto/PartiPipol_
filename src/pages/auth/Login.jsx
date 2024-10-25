@@ -86,13 +86,11 @@ function Login() {
 
         <div
         className="d-flex justify-content-center">
-        <button type="submit">Acceder</button>
+        <button type="submit" disabled={loading}> {/* Deshabilitar el botón si está cargando */}
+            {loading ? <Spinner animation="border" size="sm" /> : 'Acceder'} {/* Mostrar el spinner o el texto */}
+          </button>
         </div>
-        {loading && (
-          <div className="mt-3">
-            <Spinner animation="border" />
-          </div>
-        )}
+     
         {errorMessage && <p>{errorMessage}</p>}
 
 

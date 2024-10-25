@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { Spinner } from "react-bootstrap"; 
+
 
 
 function Signup() {
@@ -10,6 +12,7 @@ function Signup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false); 
 
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handleUsernameChange = (e) => setUsername(e.target.value);
@@ -24,6 +27,8 @@ function Signup() {
         email, password, username
       }
       await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/auth/signup`, newUser)
+     setLoading(true);
+
       navigate("/login")
     } catch (error) {
       console.log(error)
@@ -33,6 +38,8 @@ function Signup() {
       } else {
         navigate("/error")
       }
+    }finally {
+      setLoading(false); 
     }
   };
 
@@ -84,8 +91,9 @@ function Signup() {
         <br />
         <div
         className="d-flex justify-content-center">
-        <button  type="submit">Registrarse</button>
-
+        <button type="submit" disabled={loading}> 
+            {loading ? <Spinner animation="border" size="sm" /> : 'Registrarse'} 
+          </button>
         </div>
 
         {errorMessage && <p>{errorMessage}</p>}
